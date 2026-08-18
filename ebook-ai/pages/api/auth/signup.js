@@ -35,6 +35,7 @@ export default async function handler(req, res) {
     res.setHeader("Set-Cookie", createSessionCookie(user));
     return res.status(200).json({ username: user.username });
   } catch (err) {
+    console.error("Erro em /api/auth/signup:", err);
     return res.status(500).json({
       error: "Erro ao criar conta. Verifique se o banco de dados está configurado (POSTGRES_URL e JWT_SECRET).",
       details: String(err.message || err),

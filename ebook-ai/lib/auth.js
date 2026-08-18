@@ -7,7 +7,11 @@ async function postJSON(url, body) {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(data.error || "Algo deu errado. Tente novamente.");
+    // Em produção, mostramos os detalhes técnicos temporariamente para facilitar
+    // o diagnóstico do deploy. Depois que tudo estiver funcionando, isso pode
+    // voltar a mostrar só data.error, sem os detalhes.
+    const msg = data.details ? `${data.error} — ${data.details}` : data.error || "Algo deu errado. Tente novamente.";
+    throw new Error(msg);
   }
   return data;
 }
